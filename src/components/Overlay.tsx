@@ -1,12 +1,23 @@
 "use client";
 
-import React, { useContext } from "react";
+import React, { useContext, useState, useRef } from "react";
 import { motion, useTransform } from "framer-motion";
-import Image from "next/image";
+import { Volume2, VolumeX } from "lucide-react";
 import { ScrollProgressContext } from "./ScrollyCanvas";
 
 export default function Overlay() {
   const scrollYProgress = useContext(ScrollProgressContext);
+  const [isMuted, setIsMuted] = useState(true);
+  const videoRef = useRef<HTMLVideoElement>(null);
+
+  const toggleMute = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    if (videoRef.current) {
+      const newMuted = !videoRef.current.muted;
+      videoRef.current.muted = newMuted;
+      setIsMuted(newMuted);
+    }
+  };
 
   // Fallback if context is not present
   const dummyProgress = { get: () => 0 };
@@ -41,15 +52,30 @@ export default function Overlay() {
         >
           {/* Photo on Left */}
           <div className="md:col-span-5 flex justify-center md:justify-start">
-            <div className="relative w-48 h-48 sm:w-64 sm:h-64 md:w-80 md:h-[400px] rounded-2xl overflow-hidden bg-zinc-950 border border-gold/15 p-2 gold-glow pointer-events-auto">
-              <div className="relative w-full h-full rounded-xl overflow-hidden">
-                <Image
-                  src="/images/rohit_portrait.png"
-                  alt="Rohit Rathore Portrait"
-                  fill
-                  priority
-                  className="object-cover filter grayscale contrast-110 brightness-90 hover:grayscale-0 hover:scale-102 transition-all duration-700 ease-out"
+            <div className="relative w-48 h-48 sm:w-64 sm:h-64 md:w-80 md:h-[400px] rounded-2xl overflow-hidden bg-zinc-950 border border-gold/15 p-2 gold-glow pointer-events-auto group/video">
+              <div className="relative w-full h-full rounded-xl overflow-hidden bg-black">
+                <video
+                  ref={videoRef}
+                  src="/videos/hero.mp4"
+                  autoPlay
+                  muted={isMuted}
+                  loop
+                  playsInline
+                  className="w-full h-full object-cover filter contrast-110 brightness-90 hover:scale-102 transition-all duration-700 ease-out"
                 />
+                
+                {/* Audio Toggle Button */}
+                <button
+                  onClick={toggleMute}
+                  className="absolute bottom-3 right-3 z-20 flex items-center justify-center w-10 h-10 rounded-full bg-black/60 hover:bg-black/80 border border-gold/30 hover:border-gold text-gold transition-all duration-300 backdrop-blur-sm shadow-lg active:scale-95 cursor-pointer"
+                  title={isMuted ? "Unmute Audio" : "Mute Audio"}
+                >
+                  {isMuted ? (
+                    <VolumeX className="w-5 h-5" />
+                  ) : (
+                    <Volume2 className="w-5 h-5" />
+                  )}
+                </button>
               </div>
             </div>
           </div>
