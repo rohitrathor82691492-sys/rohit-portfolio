@@ -1,7 +1,7 @@
 "use client";
 
-import React, { useContext, useState, useRef } from "react";
-import { motion, useTransform } from "framer-motion";
+import React, { useContext, useState, useRef, useEffect } from "react";
+import { motion, useTransform, useMotionValueEvent } from "framer-motion";
 import { Volume2, VolumeX } from "lucide-react";
 import { ScrollProgressContext } from "./ScrollyCanvas";
 
@@ -9,6 +9,12 @@ export default function Overlay() {
   const scrollYProgress = useContext(ScrollProgressContext);
   const [isMuted, setIsMuted] = useState(true);
   const videoRef = useRef<HTMLVideoElement>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
+  const isIntersectingRef = useRef(true);
+
+  // Fallback if context is not present
+  const dummyProgress = { get: () => 0 };
+  const progress = scrollYProgress || (dummyProgress as any);
 
   const toggleMute = (e: React.MouseEvent) => {
     e.stopPropagation();
@@ -19,9 +25,44 @@ export default function Overlay() {
     }
   };
 
-  // Fallback if context is not present
-  const dummyProgress = { get: () => 0 };
-  const progress = scrollYProgress || (dummyProgress as any);
+  const updatePlaybackState = (inView: boolean, currentProgress: number) => {
+    const video = videoRef.current;
+    if (!video) return;
+
+    // The hero section is visible when in view and scroll progress is less than 0.22
+    const isHeroVisible = inView && currentProgress < 0.22;
+
+    if (isHeroVisible) {
+      video.play().catch((err) => {
+        console.log("Playback prevented or error:", err);
+      });
+    } else {
+      video.pause();
+    }
+  };
+
+  useEffect(() => {
+    const videoContainer = containerRef.current;
+    if (!videoContainer) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        isIntersectingRef.current = entry.isIntersecting;
+        updatePlaybackState(entry.isIntersecting, progress.get() as number);
+      },
+      { threshold: 0.1 }
+    );
+
+    observer.observe(videoContainer);
+
+    return () => {
+      observer.disconnect();
+    };
+  }, []);
+
+  useMotionValueEvent(progress, "change", (latest) => {
+    updatePlaybackState(isIntersectingRef.current, latest as number);
+  });
 
   // Section 1: Hero Section (0% to 22% scroll)
   const opacity1 = useTransform(progress, [0, 0.12, 0.22], [1, 0.8, 0]);
@@ -52,7 +93,10 @@ export default function Overlay() {
         >
           {/* Photo on Left */}
           <div className="md:col-span-5 flex justify-center md:justify-start">
-            <div className="relative w-48 h-48 sm:w-64 sm:h-64 md:w-80 md:h-[400px] rounded-2xl overflow-hidden bg-zinc-950 border border-gold/15 p-2 gold-glow pointer-events-auto group/video">
+            <div 
+              ref={containerRef}
+              className="relative w-48 h-48 sm:w-64 sm:h-64 md:w-80 md:h-[400px] rounded-2xl overflow-hidden bg-zinc-950 border border-gold/15 p-2 gold-glow pointer-events-auto group/video"
+            >
               <div className="relative w-full h-full rounded-xl overflow-hidden bg-black">
                 <video
                   ref={videoRef}
