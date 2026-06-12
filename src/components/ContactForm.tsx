@@ -95,7 +95,7 @@ export default function ContactForm() {
               </div>
               <div className="space-y-1 font-mono">
                 <div className="text-[9px] tracking-widest text-zinc-650 uppercase font-bold">LOCATION</div>
-                <div className="text-sm tracking-wider uppercase font-bold text-zinc-200">Dewas, Madhya Pradesh</div>
+                <div className="text-sm tracking-wider uppercase font-bold text-zinc-200">Dewas, Madhya Pradesh, India</div>
               </div>
             </div>
           </div>
