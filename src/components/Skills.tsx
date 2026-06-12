@@ -27,13 +27,13 @@ const SKILLS: SkillItem[] = [
   {
     id: "03",
     name: "Adobe After Effects",
-    percentage: 85,
+    percentage: 50,
     icon: <Video className="w-5 h-5 text-gold" />,
   },
   {
     id: "04",
     name: "Artificial Intelligence (AI Tools)",
-    percentage: 95,
+    percentage: 60,
     icon: <Cpu className="w-5 h-5 text-gold" />,
   },
 ];

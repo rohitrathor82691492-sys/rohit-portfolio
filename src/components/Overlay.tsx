@@ -63,7 +63,7 @@ export default function Overlay() {
               Rohit <span className="font-serif italic font-normal text-gold block sm:inline text-gold-glow">Rathore</span>
             </h1>
             <p className="font-mono text-xs sm:text-sm tracking-[0.2em] text-zinc-400 uppercase select-none font-bold">
-              Graphic Designer <span className="text-zinc-650">|</span> AI Creator <span className="text-zinc-650">|</span> Video Editor
+              Graphic Designer <span className="text-zinc-650">|</span> AI Creator <span className="text-zinc-650">|</span> Basic Video Editor
             </p>
           </div>
         </motion.div>

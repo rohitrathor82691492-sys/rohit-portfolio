@@ -64,7 +64,7 @@ export default function Experience() {
 
               <div className="mt-4 pt-4 border-t border-zinc-900/60 flex items-center space-x-2 text-zinc-500 font-mono text-[9px] uppercase tracking-widest">
                 <MapPin className="w-4 h-4 text-gold" />
-                <span>Dewas, Madhya Pradesh</span>
+                <span>Dewas, Madhya Pradesh, India</span>
               </div>
             </div>
           </motion.div>

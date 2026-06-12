@@ -9,6 +9,7 @@ import Gallery, { ScannedImage } from "@/components/Gallery";
 import Experience from "@/components/Experience";
 import ContactForm from "@/components/ContactForm";
 import Footer from "@/components/Footer";
+import WhatsAppButton from "@/components/WhatsAppButton";
 
 // Server-side directory scanner function
 function scanGalleryFolders(): ScannedImage[] {
@@ -76,6 +77,9 @@ export default function Home() {
 
       {/* Boutique Agency Footer */}
       <Footer />
+
+      {/* Floating WhatsApp button */}
+      <WhatsAppButton />
     </div>
   );
 }
