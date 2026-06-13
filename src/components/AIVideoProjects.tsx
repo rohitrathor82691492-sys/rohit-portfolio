@@ -29,7 +29,7 @@ export default function AIVideoProjects({ videos }: AIVideoProjectsProps) {
             CINEMATIC GENERATIVE ART
           </div>
           <h2 className="text-4xl md:text-6xl font-black uppercase tracking-tighter leading-none text-zinc-100">
-            AI VIDEO PROJECTS
+            AI VIDEOS
           </h2>
         </div>
         <p className="max-w-md text-zinc-550 font-mono text-xs uppercase tracking-widest leading-relaxed">
@@ -88,7 +88,7 @@ export default function AIVideoProjects({ videos }: AIVideoProjectsProps) {
                 <div className="space-y-1">
                   <div className="font-mono text-[9px] tracking-widest text-gold uppercase font-bold flex items-center gap-1.5">
                     <Film className="w-3 h-3" />
-                    AI VIDEO PROJECT
+                    AI VIDEO
                   </div>
                   <h3 className="text-base font-black uppercase tracking-tight text-zinc-200 transition-colors group-hover:text-white">
                     {vid.title}
