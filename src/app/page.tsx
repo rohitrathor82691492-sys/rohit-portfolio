@@ -34,9 +34,9 @@ function scanGalleryFolders(): ScannedImage[] {
       files.forEach((file, index) => {
         // Match standard web image formats
         if (/\.(png|jpe?g|webp|svg|gif)$/i.test(file)) {
-          // Clean file names as readable titles
-          const title = file
-            .replace(/\.[^/.]+$/, "") // Remove extension
+          // Clean file names as readable titles, handling double extensions
+          const titleWithoutExt = file.replace(/\.[^/.]+$/, "");
+          const title = (titleWithoutExt.includes(".") ? titleWithoutExt.replace(/\.[^/.]+$/, "") : titleWithoutExt)
             .replace(/[_-]/g, " ") // Remove dashes/underscores
             .trim();
 
