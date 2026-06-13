@@ -6,12 +6,13 @@ import Overlay from "@/components/Overlay";
 import About from "@/components/About";
 import Skills from "@/components/Skills";
 import Gallery, { ScannedImage } from "@/components/Gallery";
+import AIVideoProjects, { ScannedVideo } from "@/components/AIVideoProjects";
 import Experience from "@/components/Experience";
 import ContactForm from "@/components/ContactForm";
 import Footer from "@/components/Footer";
 import WhatsAppButton from "@/components/WhatsAppButton";
 
-// Server-side directory scanner function
+// Server-side directory scanner function for images
 function scanGalleryFolders(): ScannedImage[] {
   // Map folder names to category keys used by the frontend
   const folderToCategoryMap: Record<string, string> = {
@@ -54,8 +55,38 @@ function scanGalleryFolders(): ScannedImage[] {
   return scannedImages;
 }
 
+// Server-side directory scanner function for videos
+function scanVideoFolder(): ScannedVideo[] {
+  const scannedVideos: ScannedVideo[] = [];
+  const publicPath = path.join(process.cwd(), "public");
+  const dirPath = path.join(publicPath, "videos", "ai-videos");
+
+  if (fs.existsSync(dirPath)) {
+    const files = fs.readdirSync(dirPath);
+    files.forEach((file, index) => {
+      // Match MP4 files
+      if (/\.mp4$/i.test(file)) {
+        // Clean double extensions and format titles
+        const titleWithoutExt = file.replace(/\.mp4$/i, "");
+        const title = (titleWithoutExt.includes(".") ? titleWithoutExt.replace(/\.[^/.]+$/, "") : titleWithoutExt)
+          .replace(/[_-]/g, " ")
+          .trim();
+
+        scannedVideos.push({
+          id: `vid-ai-${index}`,
+          src: `/videos/ai-videos/${file}`,
+          title: title || "AI Video Project",
+        });
+      }
+    });
+  }
+
+  return scannedVideos;
+}
+
 export default function Home() {
   const scannedImages = scanGalleryFolders();
+  const scannedVideos = scanVideoFolder();
 
   return (
     <div className="relative min-h-screen bg-[#070707] text-white">
@@ -76,6 +107,9 @@ export default function Home() {
 
         {/* Masonry Case Study Gallery with Lightbox (Scanned Dynamically) */}
         <Gallery images={scannedImages} />
+
+        {/* AI Video Projects Showcase Grid (Dynamic Scanned Videos) */}
+        <AIVideoProjects videos={scannedVideos} />
 
         {/* Professional Experience Section */}
         <Experience />
