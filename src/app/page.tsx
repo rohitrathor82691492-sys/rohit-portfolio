@@ -13,12 +13,21 @@ import WhatsAppButton from "@/components/WhatsAppButton";
 
 // Server-side directory scanner function
 function scanGalleryFolders(): ScannedImage[] {
-  const folders = ["logo-design", "social-media", "posters", "banners", "ai-creatives"];
-  const scannedImages: ScannedImage[] = [];
+  // Map folder names to category keys used by the frontend
+  const folderToCategoryMap: Record<string, string> = {
+    "logo-design": "logo-design",
+    "visual-identity": "visual-identity",
+    "social-media": "social-media",
+    "print-design": "print-design",
+    "posters": "print-design", // map posters folder to print-design category
+    "banners": "print-design",  // map banners folder to print-design category
+    "ai-creatives": "ai-creatives",
+  };
 
+  const scannedImages: ScannedImage[] = [];
   const publicPath = path.join(process.cwd(), "public");
 
-  folders.forEach((folder) => {
+  Object.entries(folderToCategoryMap).forEach(([folder, category]) => {
     const dirPath = path.join(publicPath, "images", folder);
     if (fs.existsSync(dirPath)) {
       const files = fs.readdirSync(dirPath);
@@ -34,7 +43,7 @@ function scanGalleryFolders(): ScannedImage[] {
           scannedImages.push({
             id: `img-${folder}-${index}`,
             src: `/images/${folder}/${file}`,
-            category: folder,
+            category: category,
             title: title || "Design Work",
           });
         }

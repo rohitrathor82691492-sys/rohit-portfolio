@@ -24,9 +24,9 @@ interface CategoryFilter {
 const CATEGORIES: CategoryFilter[] = [
   { key: "all", name: "All Works" },
   { key: "logo-design", name: "Logo Design" },
-  { key: "social-media", name: "Social Media" },
-  { key: "posters", name: "Posters" },
-  { key: "banners", name: "Banners" },
+  { key: "visual-identity", name: "Visual Identity Design" },
+  { key: "social-media", name: "Social Media Design" },
+  { key: "print-design", name: "Print Design" },
   { key: "ai-creatives", name: "AI Creatives" },
 ];
 
